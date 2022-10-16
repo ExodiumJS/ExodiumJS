@@ -1,0 +1,30 @@
+{
+  "name": "exodiumjs",
+  "version": "0.0.1",
+  "description": "A server software for Minecraft: Bedrock edition",
+  "main": "src/exodiumteam/Exodium.js",
+  "dependencies": {
+    "bbmc-binarystream": "git+https://github.com/BlueBirdMC/BinaryStream.git",
+    "bbmc-raknet": "git+https://github.com/BlueBirdMC/RakNet.git",
+    "bbmc-nbt":  "git+https://github.com/BlueBirdMC/NBT.git",
+    "uuid-js": "^0.7.5"
+  },
+  "author": "ExodiumJS Team",
+  "license": "GNU-3.0",
+  "devDependencies": {
+    "time-stamp": "^2.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ExodiumJS/ExodiumJS"
+  },
+  "keywords": [
+    "mcpe",
+    "mcpe server",
+    "mcbe server"
+  ],
+  "bugs": {
+    "url": "https://github.com/ExodiumJS/ExodiumJS/issues"
+  },
+  "homepage": "https://github.com/ExodiumJS/ExodiumJS"
+}
