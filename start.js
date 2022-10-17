@@ -1,3 +1,2 @@
-const BlueBird = require("./");
-new BlueBird();
-// Test
+const Exodium = require("./");
+new Exodium();
