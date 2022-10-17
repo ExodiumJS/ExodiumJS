@@ -19,9 +19,12 @@ const Config = require("./utils/Config");
 const RakNetInterface = require("./network/RakNetInterface");
 const Logger = require("./utils/MainLogger");
 const ConsoleCommandReader = require("./command/ConsoleCommandReader");
+const CommandMap = require("./command/CommandMap");
 const fs = require("fs");
 const ItemFactory = require("./item/ItemFactory");
 const GoldenHelmet = require("./item/GoldenHelmet");
+const {Str,Short, Int, NBTNetworkBinaryStream, Compound} = require("bbmc-nbt");
+const ItemSerializer = require("./item/utils/ItemSerializer");
 
 const version = "0.0.1";
 
@@ -30,9 +33,12 @@ class Server {
 	logger;
 	/** @type RakNetInterface */
 	raknet;
-
+	/** @type {CommandMap|null} */
+	commandMap = null;
 	/** @type {Server|null} */
 	static instance = null;
+	/** @type {ItemFactory} */
+	itemFactory = null;
 
 	constructor(path) {
 		if (!Server.instance) {
@@ -65,9 +71,9 @@ class Server {
 				this.getLogger().info("Done in (" + (Date.now() - start_time) + "ms).");
 			});
 		}
-		let reader = new ConsoleCommandReader(this);
-		ItemFactory.getInstance().registerItem(new GoldenHelmet());
-		reader.read();
+		this.commandMap = new CommandMap(this);
+		new ConsoleCommandReader(this);
+		this.itemFactory = new ItemFactory(this);
 	}
 
 	static getInstance(){
@@ -76,6 +82,21 @@ class Server {
 		}
 		return Server.instance;
 	}
+
+	// TODO REMOVE THIS
+	lockItem() {
+		let nbt2 = new NBTNetworkBinaryStream();
+		nbt2.writeCompoundTag(new Compound("data", [
+			new Str("Id", "minecraft:golden_helmet"),
+			new Int("Count", 1),
+			new Short("Meta", 0),
+			new Short("Damage", 0)
+		]));
+		//console.log(nbt2.readCompoundTag("data"));
+		let item = (new ItemSerializer(nbt2)).nbtDeserialize();
+		console.log(item);
+	}
+
 
 	/**
 	 * @param players {Player[]}
@@ -124,6 +145,10 @@ class Server {
 	 */
 	getOnlinePlayers() {
 		return Array.from(this.raknet.players.values());
+	}
+
+	getCommandMap(){
+		return this.commandMap;
 	}
 
 	/**

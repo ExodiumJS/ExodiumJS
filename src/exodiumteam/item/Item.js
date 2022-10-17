@@ -15,12 +15,13 @@
  \**********************************************************/
 
 const ItemIdentifier = require("./utils/ItemIdentifier");
-const Item_Map = require("../resources/item_id_map.json");
+const {Compound, Str} = require("bbmc-nbt");
+const ItemFactory = require("./ItemFactory");
+const Server = require("../Server");
 
 class Item {
     /** @type {ItemIdentifier} */
     identifier;
-    networkId;
     name;
     nbt = null;
     count = 1;
@@ -34,35 +35,34 @@ class Item {
     constructor(identifier, name) {
         this.identifier = identifier;
         this.name = name;
-        this.networkId = Item_Map[name];
-        console.log(this);
+        this.nbt = new Compound();
     }
 
-    getName(){
+    getName() {
         return this.name;
     }
 
-    getId(){
+    getId() {
         return this.identifier.id;
     }
 
-    getMeta(){
+    getMeta() {
         return this.identifier.meta;
     }
 
-    isTool(){
+    isTool() {
         return false;
     }
 
-    isArmorPiece(){
+    isArmorPiece() {
         return false;
     }
 
-    getMaxStackSize(){
+    getMaxStackSize() {
         return 64;
     }
 
-    onClick(){
+    onClick() {
 
     }
 
@@ -70,9 +70,11 @@ class Item {
         return 0;
     }
 
-    getEnchantmentLevel(enchantment){
+    getEnchantmentLevel(enchantment) {
 
     }
+
+
 }
 
 module.exports = Item;

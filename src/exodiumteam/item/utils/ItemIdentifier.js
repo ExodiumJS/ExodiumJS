@@ -19,12 +19,12 @@ class ItemIdentifier {
     meta;
 
     /**
-     * @param {int} id
+     * @param {string} id
      * @param {number} meta
      */
-    constructor(id, meta) {
-        if(id < -0x8000 || id > 0x7fff){ //signed short range
-            throw new Error("ID must be in range " + -0x8000 + " - " + 0x7fff);
+    constructor(id, meta = 0) {
+        if(!id.includes("minecraft:")){ //signed short range
+            id = "minecraft:" + id;
         }
         this.id = id;
         this.meta = meta !== -1 ? meta & 0x7FFF : -1;

@@ -42,8 +42,9 @@ const AvailableActorIdentifiers = require("../network/mcpe/protocol/AvailableAct
 const NetworkSettingsPacket = require("../network/mcpe/protocol/NetworkSettingsPacket");
 const CompressionAlgorithm = require("../network/mcpe/protocol/types/CompressionAlgorithm");
 const Server = require("../Server");
+const Human = require("../entity/Human");
 
-class Player extends Entity {
+class Player extends Human {
 
 	username = "";
 	loggedIn = false;
@@ -404,6 +405,10 @@ class Player extends Entity {
 		}
 
 		this.server.raknet.queuePacket(this, packet, immediate);
+	}
+
+	getServer(){
+		return this.server;
 	}
 }
 

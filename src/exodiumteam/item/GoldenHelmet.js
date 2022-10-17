@@ -20,7 +20,7 @@ const ItemIdentifier = require("./utils/ItemIdentifier");
 class GoldenHelmet extends Armor{
 
     constructor() {
-        super(new ItemIdentifier(314, 0), "minecraft:golden_helmet");
+        super(new ItemIdentifier("minecraft:golden_helmet", 0), "Golden Helmet");
     }
 
     getMaxDurability() {

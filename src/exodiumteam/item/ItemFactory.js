@@ -12,27 +12,27 @@
  *          of the license.                               *
  *              ___________________________               *
  *              \ @author ExodiumJS Team /                *
- \**********************************************************/
+\*********************************************************/
 
 const Item = require("./Item");
+const GoldenHelmet = require("./GoldenHelmet");
 
 class ItemFactory {
-    /** @type {ItemFactory|null} */
-    static instance = null;
 
-    static list = new Array(65536);
+    server;
 
-    constructor() {
-        if (ItemFactory.instance === null){
-            ItemFactory.instance = this;
-        }
+    constructor(server) {
+        this.list = Array.apply(null, Array(65556)).map(function () {});
+        this.server = server;
+        this.registerItem(new GoldenHelmet());
     }
 
-    static getInstance(){
-        if (ItemFactory.instance === null){
-            return new ItemFactory();
-        }
-        return ItemFactory.instance;
+    /**
+     * @param {string} name
+     * @return Item
+     */
+    readAsura(name){
+        return this.list[name];
     }
 
     /**
@@ -42,30 +42,21 @@ class ItemFactory {
     registerItem(item, override = false) {
         if (item instanceof Item) {
             let id = item.getId();
-            if (!override && this.isRegistered(id)) {
+            if (!override && this.isRegistered(id + ":" + item.getMeta())) {
                 console.log("Trying to overwrite an already registered item");
                 return;
             }
 
-            ItemFactory.list[this.getListOffset(id)] = Object.assign(Object.create(Object.getPrototypeOf(item)), item);
-            console.log(item);
+            this.list[id + ":" + item.getMeta()] = item;
         }
     }
 
     isRegistered(id) {
-        if (id < 256) {
+        /*if (id < 256) {
             //return BlockFactory.isRegistered(id); TODO
-        }
-        return ItemFactory.list[this.getListOffset(id)] !== null;
+        }*/
+        return this.list[id] ?? false;
     }
-
-    getListOffset(id) {
-        if (id < -0x8000 || id > 0x7fff) {
-            console.log("ID must be in range " + -0x8000 + " - " + 0x7fff);
-        }
-        return id & 0xffff;
-    }
-
 }
 
 module.exports = ItemFactory;
